@@ -9,7 +9,7 @@ struct outbuf {
 };
 
 int main(void) {
-    void *ud;
+    void *ud = NULL;
     for(;;) {
         size_t size;
         if(fread(&size, sizeof size, 1, stdin) != 1) {
