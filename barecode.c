@@ -4,7 +4,7 @@
 #include <sys/mman.h>
 
 struct outbuf {
-    char *buf;
+    void *buf;
     size_t len;
 };
 
@@ -19,7 +19,7 @@ int main(void) {
         if(size == 0) {
             break;
         }
-        char *buf = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+        void *buf = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
         if(buf == MAP_FAILED) {
             perror("mmap");
             return 1;
@@ -32,7 +32,7 @@ int main(void) {
             }
             return 1;
         }
-        __builtin___clear_cache(buf, buf + size);
+        __builtin___clear_cache(buf, (char *)buf + size);
         if(mprotect(buf, size, PROT_READ|PROT_EXEC)) {
             perror("mprotect");
             return 1;
