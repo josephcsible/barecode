@@ -8,3 +8,4 @@ Instructions to try:
 4. `(nasm -f bin outhello.asm -o /dev/stdout | ./prependlength; true | ./prependlength ) | ./barecode`
 5. `nasm -f bin exechello.asm -o /dev/stdout | ./prependlength | ./barecode`
 6. `(nasm -f bin outhello.asm -o /dev/stdout | ./prependlength; nasm -f bin exechello.asm -o /dev/stdout | ./prependlength ) | ./barecode`
+7. `(nasm -f bin savehello.asm -o /dev/stdout | ./prependlength; nasm -f bin loadout.asm -o /dev/stdout | ./prependlength; true | ./prependlength ) | ./barecode`

@@ -9,6 +9,7 @@ struct outbuf {
 };
 
 int main(void) {
+    void *ud;
     for(;;) {
         size_t size;
         if(fread(&size, sizeof size, 1, stdin) != 1) {
@@ -36,7 +37,7 @@ int main(void) {
             perror("mprotect");
             return 1;
         }
-        struct outbuf out = ((struct outbuf (*)(void *(*)(void *restrict, const char *restrict)))buf)(dlsym);
+        struct outbuf out = ((struct outbuf (*)(void *(*)(void *restrict, const char *restrict), void **))buf)(dlsym, &ud);
         if(munmap(buf, size)) {
             perror("munmap");
             return 1;
