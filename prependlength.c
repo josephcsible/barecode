@@ -1,9 +1,24 @@
+#ifdef _WIN32
+#include <fcntl.h>
+#endif
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define CHUNKSIZE 4096
+
+static void binary_stdio(void) {
+#ifdef _WIN32
+    if(_setmode(_fileno(stdin), _O_BINARY) == -1 || _setmode(_fileno(stdout), _O_BINARY) == -1) {
+        perror("_setmode");
+#else
+    if(!freopen(NULL, "rb", stdin) || !freopen(NULL, "wb", stdout)) {
+        perror("freopen");
+#endif
+        exit(1);
+    }
+}
 
 int main(void) {
     size_t total_bytes_read = 0;
@@ -12,6 +27,7 @@ int main(void) {
         perror("malloc");
         return 1;
     }
+    binary_stdio();
     for(;;) {
         size_t bytes_read = fread(buf + total_bytes_read, 1, CHUNKSIZE, stdin);
         total_bytes_read += bytes_read;
