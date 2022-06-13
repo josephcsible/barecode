@@ -14,23 +14,21 @@ push edx
 push ebp ; kernel32
 call ebx ; getProcAddress(kernel32, .LoadLibraryA)
 
+lea edx, [esi + .User32dll - .gotEip]
+push edx
+call eax ; LoadLibraryA(.User32dll)
+
 lea edx, [esi + .FreeLibrary - .gotEip]
 push edx
 push ebp ; kernel32
-mov ebp, eax ; LoadLibraryA
+mov ebp, eax ; user32
 call ebx ; getProcAddress(kernel32, .FreeLibrary)
-mov ecx, ebp ; LoadLibraryA
-mov ebp, eax ; FreeLibrary
-
-lea edx, [esi + .User32dll - .gotEip]
-push edx
-call ecx ; LoadLibraryA(.User32dll)
 mov ecx, ebx ; getProcAddress
-mov ebx, eax ; user32
+mov ebx, eax ; FreeLibrary
 
 lea edx, [esi + .MessageBoxA - .gotEip]
 push edx
-push ebx ; user32
+push ebp ; user32
 call ecx ; getProcAddress(user32, .MessageBoxA)
 
 push 0 ; uType
@@ -40,8 +38,8 @@ push edx
 push 0 ; hWnd
 call eax ; MessageBoxA(NULL, .HelloWorld, NULL, 0)
 
-push ebx ; user32
-call ebp ; FreeLibrary(user32)
+push ebp ; user32
+call ebx ; FreeLibrary(user32)
 
 xor eax, eax ; out.buf
 xor edx, edx ; out.len
