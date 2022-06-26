@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
 #ifdef _WIN32
 #include <fcntl.h>
 #endif
